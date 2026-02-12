@@ -1,0 +1,8 @@
+{
+  "name": "@rmbg/model-isnet-anime",
+  "version": "0.0.1",
+  "description": "",
+  "publishConfig": {
+    "access": "public"
+  }
+}
