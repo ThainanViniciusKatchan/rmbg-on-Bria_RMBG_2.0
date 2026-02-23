@@ -12,7 +12,7 @@ import { Separator } from './components/ui/separator'
 function App() {
   const initiate = useAppStore((state) => state.initiate)
   useEffect(() => {
-    initiate().catch(() => {})
+    initiate().catch(() => { })
   }, [initiate])
 
   const handleAdd = useCallback(async () => {
@@ -39,7 +39,7 @@ function App() {
       <div className="flex flex-row items-center justify-between px-3 py-2 border-b border-neutral-200">
         <Button
           onClick={() => {
-            handleAdd().catch(() => {})
+            handleAdd().catch(() => { })
           }}
         >
           <FilePlusIcon className="mr-2 h-4 w-4" /> Add Picture

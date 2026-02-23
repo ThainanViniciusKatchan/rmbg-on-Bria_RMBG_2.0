@@ -4,6 +4,7 @@ import { open } from '@tauri-apps/api/dialog'
 import { type Event as TauriEvent, listen } from '@tauri-apps/api/event'
 import * as path from '@tauri-apps/api/path'
 import * as shell from '@tauri-apps/api/shell'
+import { invoke } from '@tauri-apps/api/tauri'
 import {
   CircleIcon,
   CheckCircledIcon,
@@ -93,6 +94,7 @@ export function Records({ className }: RecordsProps) {
                 <TableHead className="w-[60px] text-center">Status</TableHead>
                 <TableHead>File</TableHead>
                 <TableHead>Output</TableHead>
+                <TableHead>Open in</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -186,6 +188,53 @@ export function Records({ className }: RecordsProps) {
                         ) : null}
                       </div>
                     </TableCell>
+                    <div className="shrink-0 max-w-full text-ellipsis overflow-hidden">
+                      <button
+                        onClick={async () => {
+                          try {
+                            if (image.output) {
+                              const directory = await path.resolve(image.output);
+                              await invoke('open_program', {
+                                path: directory,
+                                program: 'C:\\Program Files\\WindowsApps\\Canva.Affinity_3.0.3.4027_x64__8a0j1tnjnt4a4\\App\\Affinity.exe'
+                              });
+                              console.log('Comando enviado');
+                            } else {
+                              console.log('Nenhum arquivo de saída para abrir.');
+                            }
+                          } catch (error) {
+                            console.error('Erro ao abrir:', error);
+                          }
+                        }}
+                        className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2"
+                      >
+                        Affinity
+                      </button>
+                      <button
+                        onClick={async () => {
+                          try {
+                            if (image.output) {
+                              const directory = await path.resolve(image.output);
+                              await invoke('open_program', {
+                                path: directory,
+                                program: 'C:\\Users\\Thainan\\AppData\\Local\\Figma\\app-126.1.2\\Figma.exe'
+                              });
+                              console.log('Comando enviado');
+                            } else {
+                              console.log('Nenhum arquivo de saída para abrir.');
+                            }
+                          } catch (error) {
+                            console.error('Erro ao abrir:', error);
+                          }
+                        }}
+                        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2">
+                        Figma
+                      </button>
+                      {/* TODO: Implementar o botão de Photoshop */}
+                      <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2">
+                        Photoshop
+                      </button>
+                    </div>
                   </TableRow>
                 )
               })}
@@ -204,8 +253,9 @@ export function Records({ className }: RecordsProps) {
             </div>
             <div className="text-sm text-muted-foreground">JPG / PNG</div>
           </div>
+
         )}
-      </div>
+      </div >
       <Previewer
         open={previewIndex >= 0}
         initiateIndex={previewIndex}

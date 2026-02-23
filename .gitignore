@@ -6,7 +6,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+cargo_errors_0.17.txt
+cargo_errors_2.txt
+cargo_errors_final.txt
 
+# Dependencies
 node_modules
 dist
 dist-ssr

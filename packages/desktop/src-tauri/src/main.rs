@@ -68,9 +68,19 @@ async fn rmbg(file: String, model: String, resolution: u32) -> Result<String, St
     }
 }
 
+// Open program and import image
+use std::process::Command;
+
+#[tauri::command]
+fn open_program(path: String, program: String) {
+    println!("Opening path: {}", path);
+    let _ = Command::new(program).arg(path).spawn();
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
+            open_program,
             load_config,
             save_config,
             download_model,

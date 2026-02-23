@@ -40,13 +40,13 @@
       },
       "shell": {
         "all": false,
-        "open": "^(([a-zA-Z]:\\.+)|(/\\.+)||(https?://\\w+)).+"
+        "open": true
       }
     },
     "windows": [
       {
         "title": "RMBG",
-        "width": 800,
+        "width": 950,
         "height": 600
       }
     ],
