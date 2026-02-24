@@ -5,9 +5,48 @@ use std::fs;
 use std::io::{Read, Write};
 use std::path::Path;
 use tauri::{api::path::app_cache_dir, api::path::app_config_dir, Manager};
+use std::env;
+use std::path::PathBuf;
 
 mod downloader;
 mod rmbg;
+
+use std::process::Command;
+
+#[tauri::command]
+fn open_program(path: String, program: String) {
+    let mut final_program_path = program.clone();
+
+    // Se for o Figma, vamos procurar a pasta dele dinamicamente!
+    if program == "Figma.exe" {
+        // Pega o caminho C:\Users\SEU_USUARIO\AppData\Local
+        if let Ok(local_app_data) = env::var("LOCALAPPDATA") {
+            let figma_dir = PathBuf::from(local_app_data).join("Figma");
+            
+            // Lê as pastas dentro de LocalAppData\Figma
+            if let Ok(entries) = fs::read_dir(figma_dir) {
+                for entry in entries.flatten() {
+                    let dir_path = entry.path();
+                    // Procura a pasta que começa com "app-" (ex: app-126.1.2)
+                    if dir_path.is_dir() && dir_path.file_name().unwrap().to_str().unwrap().starts_with("app-") {
+                        let exe_path = dir_path.join("Figma.exe");
+                        if exe_path.exists() {
+                            final_program_path = exe_path.to_str().unwrap().to_string();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    println!("Caminho final do executável: {}", final_program_path);
+
+    // Executa o programa passando o caminho da imagem
+    let _ = Command::new(&final_program_path)
+        .arg(&path)
+        .spawn();
+}
 
 #[tauri::command]
 async fn load_config(app_handle: tauri::AppHandle) -> Result<String, ()> {
@@ -66,15 +105,6 @@ async fn rmbg(file: String, model: String, resolution: u32) -> Result<String, St
             Err(format!("{:?}", e))
         },
     }
-}
-
-// Open program and import image
-use std::process::Command;
-
-#[tauri::command]
-fn open_program(path: String, program: String) {
-    println!("Opening path: {}", path);
-    let _ = Command::new(program).arg(path).spawn();
 }
 
 fn main() {

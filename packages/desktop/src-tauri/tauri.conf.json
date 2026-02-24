@@ -39,8 +39,10 @@
         ]
       },
       "shell": {
-        "all": false,
-        "open": true
+        "all": true,
+        "open": true,
+        "sidecar": true,
+        "execute": true
       }
     },
     "windows": [

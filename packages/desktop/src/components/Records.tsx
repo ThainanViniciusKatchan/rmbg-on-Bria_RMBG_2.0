@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { type ReactElement, useCallback, useEffect, useState } from 'react'
 import { open } from '@tauri-apps/api/dialog'
+import { open as openShell } from '@tauri-apps/api/shell';
 import { type Event as TauriEvent, listen } from '@tauri-apps/api/event'
 import * as path from '@tauri-apps/api/path'
 import * as shell from '@tauri-apps/api/shell'
@@ -196,9 +197,10 @@ export function Records({ className }: RecordsProps) {
                               const directory = await path.resolve(image.output);
                               await invoke('open_program', {
                                 path: directory,
-                                program: 'C:\\Program Files\\WindowsApps\\Canva.Affinity_3.0.3.4027_x64__8a0j1tnjnt4a4\\App\\Affinity.exe'
+                                program: 'Affinity.exe'
                               });
-                              console.log('Comando enviado');
+
+                              console.log('Comando enviado para o Affinity');
                             } else {
                               console.log('Nenhum arquivo de saída para abrir.');
                             }
@@ -210,6 +212,7 @@ export function Records({ className }: RecordsProps) {
                       >
                         Affinity
                       </button>
+
                       <button
                         onClick={async () => {
                           try {
@@ -217,9 +220,10 @@ export function Records({ className }: RecordsProps) {
                               const directory = await path.resolve(image.output);
                               await invoke('open_program', {
                                 path: directory,
-                                program: 'C:\\Users\\Thainan\\AppData\\Local\\Figma\\app-126.1.2\\Figma.exe'
+                                program: 'Figma.exe'
                               });
-                              console.log('Comando enviado');
+
+                              console.log('Comando enviado para o Figma');
                             } else {
                               console.log('Nenhum arquivo de saída para abrir.');
                             }
@@ -227,7 +231,8 @@ export function Records({ className }: RecordsProps) {
                             console.error('Erro ao abrir:', error);
                           }
                         }}
-                        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2">
+                        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2"
+                      >
                         Figma
                       </button>
                       {/* TODO: Implementar o botão de Photoshop */}
